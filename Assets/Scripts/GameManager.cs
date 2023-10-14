@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    // ENCAPSULATION
     private string playername;
     public string playerName{
         get{return playername;}
@@ -39,7 +40,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {

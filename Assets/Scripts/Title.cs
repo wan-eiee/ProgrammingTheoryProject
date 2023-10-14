@@ -26,10 +26,7 @@ public class Title : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     //call end edit
     public void GetPlayerName(){
@@ -44,7 +41,6 @@ public class Title : MonoBehaviour
 
     public void LoadMainScene(){
         StartCoroutine(nameof(CountDown));
-        SceneManager.LoadScene(1);
     }
 
     IEnumerator CountDown(){
@@ -59,5 +55,7 @@ public class Title : MonoBehaviour
             }
             yield return new WaitForSeconds(1.0f);
         }
+
+        SceneManager.LoadScene(1);
     }
 }
