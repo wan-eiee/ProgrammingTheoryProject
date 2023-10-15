@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Threading;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 
 public class Title : MonoBehaviour
@@ -21,16 +23,22 @@ public class Title : MonoBehaviour
     void Start()
     {
         inputField = GameObject.Find("InputField").GetComponent<TMP_InputField>();
-        Debug.Log(GameManager.instance);
-        GameManager.instance.LoadUserData();
+        //Debug.Log(GameManager.instance);
     }
 
     // Update is called once per frame
+
+    //call selected
+    public void SetPlayerName(){
+        Debug.Log(GameManager.instance.playerName);
+        inputField.text = GameManager.instance.playerName;
+    }
     
 
     //call end edit
     public void GetPlayerName(){
         GameManager.instance.playerName = inputField.text;
+        Debug.Log(GameManager.instance.playerName);
         InitializeInputField();
     }
 
@@ -57,5 +65,15 @@ public class Title : MonoBehaviour
         }
 
         SceneManager.LoadScene(1);
+    }
+
+    public void Exit(){
+        GameManager.instance.SaveUserData();
+        Debug.Log("exit");
+        #if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+        #else
+        Application.Quit();
+        #endif
     }
 }

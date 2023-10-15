@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -16,7 +12,7 @@ public class GameManager : MonoBehaviour
     public string playerName{
         get{return playername;}
         set{
-            if(playername == ""){
+            if(playername == null){
                 playername = "default name";
             }
             else{
@@ -35,29 +31,20 @@ public class GameManager : MonoBehaviour
         if(instance == null){
             instance = this;
             DontDestroyOnLoad(gameObject);
+            LoadUserData();
         }
         else{
             Destroy(gameObject);
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SaveUserData(){
         SaveData data = new SaveData
         {
-            savedName = playerName
+            savedName = playername
         };
+        Debug.Log(data.savedName);
+        Debug.Log(playerName);
         string json = JsonUtility.ToJson(data);
         string path = Application.persistentDataPath + "/savefile.json";
         File.WriteAllText(path, json);
@@ -68,20 +55,12 @@ public class GameManager : MonoBehaviour
         if(File.Exists(path)){
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
-            playerName = data.savedName;
+            playername = data.savedName;
+            Debug.Log(data.savedName);
+            Debug.Log(playerName);
         }
         else{
             Debug.Log("No save file.");
         }
-    }
-
-    public void Exit(){
-        SaveUserData();
-
-        #if UNITY_EDITOR
-        EditorApplication.ExitPlaymode();
-        #else
-        Application.Quit();
-        #endif
     }
 }
